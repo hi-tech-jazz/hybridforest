@@ -85,16 +85,10 @@ module HybridForest
       raise ArgumentError, @error
     end
 
-    def success?
-      yield
-      true
-    rescue => e
-      @error ||= e.to_s
-      false
-    end
-
+    # Draws a random sample of +size+ from +data+.
+    #
     def random_sample(data:, size:, with_replacement: true)
-      raise ArgumentError, "Invalid sample size" if size < 0
+      raise ArgumentError, "Invalid sample size" if size < 1
 
       if with_replacement
         rows = size.times.collect { rand(0...data.count) }
@@ -113,13 +107,15 @@ module HybridForest
       )
     end
 
-    ## Given an array of predicted labels and an array of actual labels, returns the accuracy of the predictions.
+    # Given an array of predicted labels and an array of actual labels, returns the accuracy of the predictions.
     #
     def accuracy(predicted, actual)
       accurate = predicted.zip(actual).count { |p, a| p == a }
       accurate.to_f / predicted.count
     end
 
+    # Extensions to simplify common dataframe operations.
+    #
     module DataFrameExtensions
       class Rover::DataFrame
         def equal_split(feature, value)
@@ -171,6 +167,18 @@ module HybridForest
           self[label].to_a
         end
       end
+    end
+
+    private
+
+    # Yields to the given block and rescues any errors.
+    # Returns +true+ if no exceptions were raised, +false+ otherwise.
+    def success?
+      yield
+      true
+    rescue => e
+      @error ||= e.to_s
+      false
     end
   end
 end
