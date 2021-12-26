@@ -36,20 +36,23 @@ module HybridForest
           elsif instances.pure? || features.count == 0
             LeafNode.new(instances)
           else
-            split = find_best_split(instances, features)
-            if split.info_gain == 0 && parent_instances
-              LeafNode.new(parent_instances)
-            elsif split.info_gain == 0
-              LeafNode.new(instances)
-            elsif split.binary?
-              branch_binary(instances, split.subsets, split.feature, split.value)
-            else
-              branch_multiway(instances, split.subsets, split.feature)
-            end
+            try_to_split_dataset(instances, parent_instances, features)
           end
         end
 
         private
+
+        def try_to_split_dataset(instances, parent_instances, features)
+          split = find_best_split(instances, features)
+
+          if split.info_gain == 0
+            parent_instances ? LeafNode.new(parent_instances) : LeafNode.new(instances)
+          elsif split.binary?
+            branch_binary(instances, split.subsets, split.feature, split.value)
+          else
+            branch_multiway(instances, split.subsets, split.feature)
+          end
+        end
 
         def find_best_split(instances, features)
           current_impurity = @impurity_metric.compute(instances)
@@ -62,8 +65,8 @@ module HybridForest
               best_multiway_split(instances, feature, current_impurity, best_split)
             end
           end
-          changed
-          notify_observers(best_split.feature)
+
+          mark_as_used(best_split.feature)
 
           best_split
         end
@@ -100,6 +103,7 @@ module HybridForest
           candidate_values.each do |value|
             subsets = instances.equal_or_greater_split(feature, value)
             info_gain = @impurity_metric.information_gain(subsets, initial_impurity)
+
             split = Split.new(feature, info_gain: info_gain, subsets: subsets, value: value)
             if split.better_than? best_split
               best_split = split
@@ -112,10 +116,12 @@ module HybridForest
         def best_multiway_split(instances, feature, initial_impurity, best_split)
           subsets = instances.multiway_equal_split(feature)
           info_gain = @impurity_metric.information_gain(subsets, initial_impurity)
+
           split = Split.new(feature, info_gain: info_gain, subsets: subsets)
           if split.better_than? best_split
             best_split = split
           end
+
           best_split
         end
 
@@ -123,6 +129,7 @@ module HybridForest
           label = instances.label
           sorted = instances.sort_by { |instance| instance[feature] }
           candidates = Set.new
+
           sorted.each_row.each_cons(2) do |first, second|
             next if first[label] == second[label]
             candidates << second[feature]
@@ -132,8 +139,9 @@ module HybridForest
 
         def default_split(instances, features)
           first_feature = features.first
+
           if instances[first_feature].numeric?
-            value = instances[first_feature][0]
+            value = instances[first_feature].first
             Split.new(first_feature, value: value)
           else
             Split.new(first_feature)
@@ -142,6 +150,11 @@ module HybridForest
 
         def remaining_features(instances)
           @feature_selector.select_features(instances.features)
+        end
+
+        def mark_as_used(feature)
+          changed
+          notify_observers(feature)
         end
       end
     end
