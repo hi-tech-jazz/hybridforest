@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = "HybridForest provides random forests built upon combinations of different decision tree algorithms to emphasize diversity."
   spec.homepage = "https://github.com/hi-tech-jazz/hybridforest"
   spec.license = "MIT"
-  spec.required_ruby_version = ">= 2.4.0"
+  spec.required_ruby_version = ">= 3.0.2"
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to 'https://mygemserver.com'"
 
