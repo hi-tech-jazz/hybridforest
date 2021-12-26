@@ -78,7 +78,7 @@ hybrid_forest.fit(training_set)
 predicted_labels = hybrid_forest.predict(test_set)
 
 # Report metrics.
-HybridForest::Utils.prediction_report(actual_test_labels, predicted_labels)
+puts HybridForest::Utils.prediction_report(actual_test_labels, predicted_labels)
 ```
 
 ## Development
