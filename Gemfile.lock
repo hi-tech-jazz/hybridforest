@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hybridforest (0.1.0)
+    hybridforest (0.3.0)
 
 GEM
   remote: https://rubygems.org/
@@ -78,4 +78,4 @@ DEPENDENCIES
   rumale
 
 BUNDLED WITH
-   2.2.22
+   2.3.3

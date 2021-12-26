@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.email = ["jazztechhi@gmail.com"]
 
   spec.summary = "Hybrid random forest for classification tasks."
-  spec.description = "HybridForest provides random forests built upon combinations of different decision tree algorithms to emphasize diversity."
+  spec.description = "HybridForest provides random forests built upon combinations of different decision tree algorithms to enable diverse tree ensembles."
   spec.homepage = "https://github.com/hi-tech-jazz/hybridforest"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.2"
@@ -35,8 +35,4 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rumale"
   spec.add_development_dependency "activesupport", "~> 6.1"
   spec.add_development_dependency "rover-df", "~> 0.2.6"
-  spec.add_development_dependency "require_all"
-
-  # For more information and examples about making a new gem, checkout our
-  # guide at: https://bundler.io/guides/creating_gem.html
 end
