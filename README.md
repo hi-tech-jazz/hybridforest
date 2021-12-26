@@ -22,19 +22,19 @@ A random forest classifier can be created with one of three base learner configu
 1. Hybrid mode
 ```ruby
 # Equivalent, hybrid is default.
-HybridForest::RandomForest.new(number_of_trees: 100, ensemble: :hybrid)
+HybridForest::RandomForest.new(number_of_trees: 100, ensemble_type: :hybrid)
 HybridForest::RandomForest.new(number_of_trees: 100) 
 ```
 
 
 2. CART mode
 ```ruby
-HybridForest::RandomForest.new(number_of_trees: 100, ensemble: :cart) 
+HybridForest::RandomForest.new(number_of_trees: 100, ensemble_type: :cart) 
 ```
 3. ID3 mode
 
 ```ruby
-HybridForest::RandomForest.new(number_of_trees: 100, ensemble: :id3) 
+HybridForest::RandomForest.new(number_of_trees: 100, ensemble_type: :id3) 
 ```
 
 The implementation is quite naive and there are a bunch of features that might be nice to have but are not supported, including:
