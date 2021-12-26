@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "rspec"
 require "hybridforest"
 
 RSpec.configure do |config|
