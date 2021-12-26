@@ -1,8 +1,47 @@
-# Hybridforest
+# HybridForest
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/hybridforest`. To experiment with that code, run `bin/console` for an interactive prompt.
+<code>HybridForest</code> offers the possibility to build hybrid random forests for classification tasks, i.e., ensembles where the base learners are built from not one but several different decision tree algorithms. As of now, two types of trees are supported:
+* `CARTTree`
+    * Performs binary  splits at each internal node.
+    * Supports categorical and continuous features.
+    * Supports binary classification problems.
+    * Uses gini impurity to find the most discriminatory feature.
+    * Considers a random subset of features in each split.
+    * Loosely based on the original CART algorithm (Breiman et al., 1984).
+* `ID3Tree`
+  * Performs multiway (>=2) splits at each internal node.
+  * Supports categorical and continuous features. 
+  * Supports binary classification problems.
+  * Uses entropy to find the most discriminatory feature.
+  * Considers every feature in max one split.
+  * Loosely based on the ID3 algorithm (Quinlan, 1986).
 
-TODO: Delete this and the text above, and describe your gem
+The random forest itself is represented by the `RandomForest` class.
+A random forest classifier can be created with one of three base learner configurations.
+
+1. Hybrid mode
+```ruby
+# Equivalent, hybrid is default.
+HybridForest::RandomForest.new(number_of_trees: 100, ensemble: :hybrid)
+HybridForest::RandomForest.new(number_of_trees: 100) 
+```
+
+
+2. CART mode
+```ruby
+HybridForest::RandomForest.new(number_of_trees: 100, ensemble: :cart) 
+```
+3. ID3 mode
+
+```ruby
+HybridForest::RandomForest.new(number_of_trees: 100, ensemble: :id3) 
+```
+
+The implementation is quite naive and there are a bunch of features that might be nice to have but are not supported, including:
+* Pruning
+* Parallelization
+* More decision trees, e.g., CHAID
+* Additional hyperparameters
 
 ## Installation
 
@@ -22,7 +61,25 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+require "hybridforest"
+
+# Prepare data. 
+# A dataset can be passed as a CSV file path, an array of hashes, or a hash of arrays.
+training_set, test_set, actual_test_labels = HybridForest::Utils.train_test_split("data.csv")
+
+# Create classifier.
+hybrid_forest = HybridForest::RandomForest.new(number_of_trees: 100)
+
+# Fit model.
+hybrid_forest.fit(training_set)
+
+# Predict.
+predicted_labels = hybrid_forest.predict(test_set)
+
+# Report metrics.
+HybridForest::Utils.prediction_report(actual_test_labels, predicted_labels)
+```
 
 ## Development
 
@@ -32,7 +89,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/hybridforest.
+Bug reports and pull requests are welcome on GitHub at https://github.com/hi-tech-jazz/hybridforest.
 
 ## License
 
