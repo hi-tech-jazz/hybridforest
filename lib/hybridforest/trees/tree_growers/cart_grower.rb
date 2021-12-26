@@ -51,7 +51,9 @@ module HybridForest
               else
                 instances.equal_split(feature, value)
               end
+
               next if subsets.any? { |set| set.count == 0 }
+
               info_gain = @impurity_metric.information_gain(subsets, current_impurity)
               split = Split.new(feature, info_gain: info_gain, subsets: subsets, value: value)
               if split.better_than? best_split
@@ -59,12 +61,13 @@ module HybridForest
               end
             end
           end
+
           best_split
         end
 
         def default_split(instances, features)
           first_feature = features.first
-          value = instances[first_feature][0]
+          value = instances[first_feature].first
           Split.new(first_feature, value: value)
         end
       end
