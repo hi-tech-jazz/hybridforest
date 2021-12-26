@@ -110,8 +110,8 @@ module HybridForest
     # Given an array of predicted labels and an array of actual labels, returns the accuracy of the predictions.
     #
     def accuracy(predicted, actual)
-      accurate = predicted.zip(actual).count { |p, a| p == a }
-      accurate.to_f / predicted.count
+      accurate = predicted.zip(actual).count { |p, a| equal_labels?(p, a) }
+      accurate.to_f / predicted.count.to_f
     end
 
     # Extensions to simplify common dataframe operations.
@@ -179,6 +179,26 @@ module HybridForest
     rescue => e
       @error ||= e.to_s
       false
+    end
+
+    def equal_labels?(a, b)
+      both_true?(a, b) || both_false?(a, b)
+    end
+
+    def both_true?(a, b)
+      true_label?(a) && true_label?(b)
+    end
+
+    def both_false?(a, b)
+      false_label?(a) && false_label?(b)
+    end
+
+    def true_label?(label)
+      label == 1 || label == true
+    end
+
+    def false_label?(label)
+      label == 0 || label == false
     end
   end
 end
