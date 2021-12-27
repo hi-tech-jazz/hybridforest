@@ -3,6 +3,35 @@
 RSpec.describe HybridForest::Utils do
   let(:mock_object) { (Class.new { include HybridForest::Utils }).new }
 
+  let(:instances) {
+    Rover::DataFrame.new([
+      {a: 1, b: "one", c: 5, d: 1, label: :f},
+      {a: 2, b: "two", c: 7, d: 0, label: :f},
+      {a: 3, b: "two", c: 7, d: 1, label: :g},
+      {a: 4, b: "two", c: 6, d: 0, label: :h}
+    ])
+  }
+
+  describe ".train_test_split(dataset, test_set_size: 20)" do
+    it "splits the dataset into training set, test set, test set labels" do
+      train, test, test_labels = HybridForest::Utils.train_test_split(instances)
+      expect(train).to be_a Rover::DataFrame
+      expect(test).to be_a Rover::DataFrame
+      expect(test_labels).to be_an Array
+      expect(test_labels.size).to eq test.size
+    end
+  end
+
+  describe ".train_test_bootstrap_split(dataset)" do
+    it "splits the dataset into training set, test set, test set labels" do
+      train, test, test_labels = HybridForest::Utils.train_test_split(instances)
+      expect(train).to be_a Rover::DataFrame
+      expect(test).to be_a Rover::DataFrame
+      expect(test_labels).to be_an Array
+      expect(test_labels.size).to eq test.size
+    end
+  end
+
   describe "#random_sample(data:, size: with_replacement: true)" do
     let(:dataset) do
       Rover::DataFrame.new([
