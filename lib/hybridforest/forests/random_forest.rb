@@ -28,6 +28,7 @@ module HybridForest
       @instances = to_dataframe(instances)
       forest_grower = Forests::GrowerFactory.for(@ensemble_type)
       @forest = forest_grower.grow_forest(@instances, @number_of_trees)
+      self
     end
 
     ##
