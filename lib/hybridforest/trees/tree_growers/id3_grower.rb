@@ -20,7 +20,6 @@ module HybridForest
     module TreeGrowers
       class ID3Grower
         include Observable
-        include Utils
 
         def initialize(feature_selector: MaxOneSplitPerFeature.new, impurity_metric: Entropy.new)
           @impurity_metric = impurity_metric

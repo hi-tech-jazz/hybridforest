@@ -5,8 +5,6 @@ module HybridForest
   module Forests
     module ForestGrowers
       class CARTGrower
-        include HybridForest::Utils
-
         def grow_forest(instances, number_of_trees)
           forest = []
           number_of_trees.times do
