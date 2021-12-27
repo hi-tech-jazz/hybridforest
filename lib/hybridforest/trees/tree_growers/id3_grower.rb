@@ -36,17 +36,17 @@ module HybridForest
           elsif instances.pure? || features.count == 0
             LeafNode.new(instances)
           else
-            try_to_split_dataset(instances, parent_instances, features)
+            try_to_split_dataset(instances, features)
           end
         end
 
         private
 
-        def try_to_split_dataset(instances, parent_instances, features)
+        def try_to_split_dataset(instances, features)
           split = find_best_split(instances, features)
 
           if split.info_gain == 0
-            parent_instances ? LeafNode.new(parent_instances) : LeafNode.new(instances)
+            LeafNode.new(instances)
           elsif split.binary?
             branch_binary(instances, split.subsets, split.feature, split.value)
           else
