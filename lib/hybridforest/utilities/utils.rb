@@ -92,7 +92,11 @@ module HybridForest
         rows = size.times.collect { rand(0...data.count) }
         data[rows]
       else
-        raise NotImplementedError
+        rows = Set.new
+        until rows.size == size
+          rows << rand(0...data.count)
+        end
+        data[rows.to_a]
       end
     end
 

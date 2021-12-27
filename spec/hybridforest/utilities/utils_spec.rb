@@ -30,7 +30,7 @@ RSpec.describe HybridForest::Utils do
     end
   end
 
-  describe ".random_sample(data:, size: with_replacement: true)" do
+  describe ".random_sample(data:, size: with_replacement:)" do
     let(:dataset) do
       Rover::DataFrame.new([
         {a: 1, b: "one"},
@@ -45,11 +45,23 @@ RSpec.describe HybridForest::Utils do
 
     let(:sample_size) { 5 }
 
-    it "returns a bootstrapped sample from the original dataset" do
-      bootstrap_sample = described_class.random_sample(data: dataset, size: sample_size)
-      expect(bootstrap_sample).to be_a Rover::DataFrame
-      expect(bootstrap_sample.names).to eq dataset.names
-      expect(bootstrap_sample.size).to eq sample_size
+    context "when set to sample with replacement" do
+      it "returns a bootstrapped sample from the original dataset" do
+        bootstrap_sample = described_class.random_sample(data: dataset, size: sample_size, with_replacement: true)
+        expect(bootstrap_sample).to be_a Rover::DataFrame
+        expect(bootstrap_sample.names).to eq dataset.names
+        expect(bootstrap_sample.size).to eq sample_size
+      end
+    end
+
+    context "when set to sample without replacement" do
+      it "returns a set of unique samples from the original dataset" do
+        bootstrap_sample = described_class.random_sample(data: dataset, size: sample_size, with_replacement: false)
+        expect(bootstrap_sample).to be_a Rover::DataFrame
+        expect(bootstrap_sample.names).to eq dataset.names
+        expect(bootstrap_sample.size).to eq sample_size
+        expect(bootstrap_sample.to_a.uniq.size).to eq bootstrap_sample.size
+      end
     end
   end
 
