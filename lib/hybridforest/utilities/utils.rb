@@ -87,7 +87,7 @@ module HybridForest
     # Draws a random sample of +size+ from +data+.
     #
     def random_sample(data:, size:, with_replacement: true)
-      raise ArgumentError, "Invalid sample size" if size < 1
+      raise ArgumentError, "Invalid sample size" if size < 1 || size > data.count
 
       if with_replacement
         rows = size.times.collect { rand(0...data.count) }
