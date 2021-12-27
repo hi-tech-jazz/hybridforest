@@ -5,8 +5,10 @@ RSpec.describe HybridForest::Trees::MaxOneSplitPerFeature do
 
   describe "#select_features(all_features)" do
     let(:features) { %w[a b c d f] }
-    it "returns all of the features except ones that are already exhausted" do
+    before do
       feature_selector.update("a")
+    end
+    it "returns all of the features except ones that are already exhausted" do
       expect(feature_selector.select_features(features)).to eq %w[b c d f]
     end
   end
