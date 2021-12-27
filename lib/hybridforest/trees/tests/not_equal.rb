@@ -6,6 +6,10 @@ module HybridForest
   module Trees
     module Tests
       class NotEqual < Test
+        def initialize(feature, value)
+          super(feature, value)
+        end
+
         def passed_by?(instance)
           instance[feature] != value
         end
