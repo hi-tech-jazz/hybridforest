@@ -24,12 +24,8 @@ module HybridForest
       end
 
       def classify(instance)
-        branch = branch_for(instance)
-        if branch
-          branch.classify(instance)
-        else
-          @majority_class
-        end
+        branch = branch_for instance
+        branch&.classify(instance) || @majority_class
       end
 
       def print_string(spacing = "")
