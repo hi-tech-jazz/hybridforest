@@ -29,32 +29,31 @@ module HybridForest
     end
 
     ##
-    # Partitions +instances+ into training and testing datasets, drawing with replacement to the training set,
+    # Partitions +dataset+ into training and testing datasets, drawing with replacement to the training set,
     # and using the not drawn instances as the testing dataset. Then, splits the testing dataset into a dataframe of
     # independent features and an array of labels.
     # Returns [+training_set+, +testing_set+, +testing_set_labels+]
     #
-    def self.train_test_bootstrap_split(instances)
-      instances = to_dataframe(instances)
+    def self.train_test_bootstrap_split(dataset)
+      dataset = to_dataframe(dataset)
+      all_rows = (0...dataset.count).to_a
 
       train_set = Rover::DataFrame.new
       train_set_rows = []
-      instances.count.times do
-        row = rand(0...instances.count)
+      dataset.count.times do
+        row = all_rows.sample
         train_set_rows << row
-        train_set.concat(instances[row])
+        train_set.concat(dataset[row])
       end
 
-      test_set_rows = (0...instances.count).to_a - train_set_rows
-      if train_set_rows.blank? # The bootstrap sample came out equal to the original dataset
-        train_test_split(instances)
-      else
-        test_set = instances[test_set_rows]
-        test_set_labels = test_set.class_labels
-        test_set.except!(test_set.label)
+      return train_test_split(dataset) if train_set_rows.sort == all_rows
 
-        [train_set, test_set, test_set_labels]
-      end
+      test_set_rows = all_rows - train_set_rows
+      test_set = dataset[test_set_rows]
+      test_set_labels = test_set.class_labels
+      test_set.except!(test_set.label)
+
+      [train_set, test_set, test_set_labels]
     end
 
     #
