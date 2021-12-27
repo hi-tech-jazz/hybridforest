@@ -8,3 +8,8 @@
 ## [0.4.0] - 2021-12-27
 
 - Minor refactoring
+
+## [0.5.0] - 2021-12-27
+
+- Make all utility methods module methods
+- Implement random sampling without replacement
