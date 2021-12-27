@@ -20,7 +20,6 @@ module HybridForest
 
       def branch_for(instance)
         match = tests.find { |test| test.passed_by? instance }
-
         paths[match]
       end
 

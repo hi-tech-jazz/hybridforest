@@ -20,11 +20,7 @@ module HybridForest
       end
 
       def classify(instance)
-        if @test.passed_by? instance
-          @true_branch.classify(instance)
-        else
-          @false_branch.classify(instance)
-        end
+        branch_for(instance).classify(instance)
       end
 
       def print_string(spacing = "")
