@@ -8,13 +8,11 @@ Gem::Specification.new do |spec|
   spec.authors = ["hi-tech-jazz"]
   spec.email = ["jazztechhi@gmail.com"]
 
-  spec.summary = "Hybrid random forest for classification tasks."
-  spec.description = "HybridForest provides random forests built upon combinations of different decision tree algorithms to enable diverse tree ensembles."
+  spec.summary = "Hybrid random forest for binary classification tasks."
+  spec.description = "HybridForest provides random forests built upon combinations of different decision tree algorithms to enable diverse tree ensembles. Until version 1.0.0, please expect breaking changes."
   spec.homepage = "https://github.com/hi-tech-jazz/hybridforest"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 3.0.2"
-
-  # spec.metadata["allowed_push_host"] = "TODO: Set to 'https://mygemserver.com'"
 
   spec.metadata["homepage_uri"] = "https://github.com/hi-tech-jazz/hybridforest"
   spec.metadata["source_code_uri"] = "https://github.com/hi-tech-jazz/hybridforest"

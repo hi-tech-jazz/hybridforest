@@ -1,5 +1,6 @@
 ## [Unreleased]
 
-## [0.1.0] - 2021-12-06
+## [0.3.1] - 2021-12-27
 
-- Initial release
+- Fix bugs related to bootstrapping and random feature selection.
+- Add more tests.
