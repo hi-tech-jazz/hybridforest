@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hybridforest (0.3.1)
+    hybridforest (0.3.2)
 
 GEM
   remote: https://rubygems.org/
