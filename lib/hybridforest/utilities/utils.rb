@@ -9,21 +9,21 @@ module HybridForest
     extend self
 
     ##
-    # Partitions +instances+ into training and testing datasets, and splits the testing dataset into a dataframe
+    # Partitions +dataset+ into training and testing datasets, and splits the testing dataset into a dataframe
     # of independent features and an array of labels. Returns [+training_set+, +testing_set+, +testing_set_labels+]
     #
-    def self.train_test_split(instances, test_set_size = 0.20)
+    def self.train_test_split(dataset, test_set_size = 0.20)
       # TODO: Shuffle and stratify samples
-      instances = to_dataframe(instances)
+      dataset = to_dataframe(dataset)
 
-      test_set_count = (instances.count * test_set_size).floor
+      test_set_count = (dataset.count * test_set_size).floor
       test_set_indices = 0..test_set_count
-      test_set = instances[test_set_indices]
+      test_set = dataset[test_set_indices]
       test_set_labels = test_set.class_labels
       test_set.except!(test_set.label)
 
-      train_set_indices = test_set_count + 1...instances.count
-      train_set = instances[train_set_indices]
+      train_set_indices = test_set_count + 1...dataset.count
+      train_set = dataset[train_set_indices]
 
       [train_set, test_set, test_set_labels]
     end
