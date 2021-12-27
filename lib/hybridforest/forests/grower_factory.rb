@@ -11,16 +11,18 @@ module HybridForest
         hybrid: HybridForest::Forests::ForestGrowers::HybridGrower
       }.freeze
 
-      def self.for(type)
-        (TYPES[type] || default).new
-      end
+      class << self
+        def for(type)
+          (TYPES[type] || default).new
+        end
 
-      def self.default
-        HybridForest::Forests::ForestGrowers::HybridGrower
-      end
+        def default
+          HybridForest::Forests::ForestGrowers::HybridGrower
+        end
 
-      def self.types
-        TYPES.keys
+        def types
+          TYPES.keys
+        end
       end
     end
   end
