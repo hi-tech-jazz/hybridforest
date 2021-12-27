@@ -181,7 +181,7 @@ module HybridForest
     end
 
     def equal_labels?(a, b)
-      both_true?(a, b) || both_false?(a, b)
+      both_true?(a, b) || both_false?(a, b) || a == b
     end
 
     def both_true?(a, b)
