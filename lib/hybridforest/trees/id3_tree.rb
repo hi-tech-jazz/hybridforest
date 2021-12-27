@@ -12,12 +12,3 @@ module HybridForest
     end
   end
 end
-
-# train, test, true_labels = HybridForest::Utilities.train_test_split("/Users/erik/RubymineProjects/hybridforest/lib/hybridforest/datasets/heart.csv")
-# tree = HybridForest::Trees::ID3Tree.new
-# tree.fit(train)
-#
-# predicted_labels = tree.predict(test)
-# puts true_labels.class
-# puts predicted_labels.class
-# puts HybridForest::Utilities.prediction_report(true_labels, predicted_labels)
