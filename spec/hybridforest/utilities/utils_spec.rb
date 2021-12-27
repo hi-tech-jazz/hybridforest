@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 RSpec.describe HybridForest::Utils do
-  let(:mock_object) { (Class.new { include HybridForest::Utils }).new }
-
   let(:instances) {
     Rover::DataFrame.new([
       {a: 1, b: "one", c: 5, d: 1, label: :f},
@@ -32,7 +30,7 @@ RSpec.describe HybridForest::Utils do
     end
   end
 
-  describe "#random_sample(data:, size: with_replacement: true)" do
+  describe ".random_sample(data:, size: with_replacement: true)" do
     let(:dataset) do
       Rover::DataFrame.new([
         {a: 1, b: "one"},
@@ -48,14 +46,14 @@ RSpec.describe HybridForest::Utils do
     let(:sample_size) { 5 }
 
     it "returns a bootstrapped sample from the original dataset" do
-      bootstrap_sample = mock_object.random_sample(data: dataset, size: sample_size)
+      bootstrap_sample = described_class.random_sample(data: dataset, size: sample_size)
       expect(bootstrap_sample).to be_a Rover::DataFrame
       expect(bootstrap_sample.names).to eq dataset.names
       expect(bootstrap_sample.size).to eq sample_size
     end
   end
 
-  describe "#prediction_report" do
+  describe ".prediction_report" do
     let(:predicted) do
       [0, 1, 1, 0, 0, 0, 1, 0, 0]
     end
@@ -65,18 +63,18 @@ RSpec.describe HybridForest::Utils do
     end
 
     it "returns a report of evaluation metrics" do
-      metrics_report = mock_object.prediction_report(actual, predicted)
+      metrics_report = described_class.prediction_report(actual, predicted)
       expect(metrics_report).to be_a String
       expect(metrics_report).to include("accuracy", "precision", "recall", "f1-score", "support")
     end
   end
 
-  describe "#to_dataframe(instances, types: nil)" do
+  describe ".to_dataframe(instances, types: nil)" do
     context "with valid input" do
       context "when given the path to a CSV" do
         it "reads the file into a dataframe" do
           csv_path = "spec/files/test.csv"
-          result = mock_object.to_dataframe(csv_path)
+          result = described_class.to_dataframe(csv_path)
           expect(result).to be_a Rover::DataFrame
         end
       end
@@ -89,7 +87,7 @@ RSpec.describe HybridForest::Utils do
           ]
         end
         it "reads the file into a dataframe" do
-          result = mock_object.to_dataframe(array)
+          result = described_class.to_dataframe(array)
           expect(result).to be_a Rover::DataFrame
         end
       end
@@ -101,14 +99,14 @@ RSpec.describe HybridForest::Utils do
           }
         end
         it "reads the file into a dataframe" do
-          result = mock_object.to_dataframe(hash)
+          result = described_class.to_dataframe(hash)
           expect(result).to be_a Rover::DataFrame
         end
       end
     end
     context "with invalid input" do
       it "raises an error" do
-        expect { mock_object.to_dataframe("foo") }.to raise_error ArgumentError
+        expect { described_class.to_dataframe("foo") }.to raise_error ArgumentError
       end
     end
   end

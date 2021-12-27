@@ -6,8 +6,6 @@ module HybridForest
   module Forests
     module ForestGrowers
       class HybridGrower
-        include HybridForest::Utils
-
         TREE_TYPES = [HybridForest::Trees::CARTTree, HybridForest::Trees::ID3Tree].freeze
 
         def grow_forest(instances, number_of_trees)
@@ -26,7 +24,7 @@ module HybridForest
         def fit_and_predict(tree_class, in_of_bag, out_of_bag, out_of_bag_labels)
           tree = tree_class.new.fit(in_of_bag)
           tree_predictions = tree.predict(out_of_bag)
-          tree_accuracy = accuracy(tree_predictions, out_of_bag_labels)
+          tree_accuracy = HybridForest::Utils.accuracy(tree_predictions, out_of_bag_labels)
           {tree: tree, oob_accuracy: tree_accuracy}
         end
 

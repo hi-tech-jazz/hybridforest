@@ -4,8 +4,6 @@ require_relative "../utilities/utils"
 
 module HybridForest
   class RandomForest
-    include HybridForest::Utils
-
     ##
     # Creates a new random forest.
     #
@@ -25,7 +23,7 @@ module HybridForest
     # Fits a model to the given dataset +instances+ and returns +self+.
     #
     def fit(instances)
-      @instances = to_dataframe(instances)
+      @instances = HybridForest::Utils.to_dataframe(instances)
       forest_grower = Forests::GrowerFactory.for(@ensemble_type)
       @forest = forest_grower.grow_forest(@instances, @number_of_trees)
       self
@@ -37,7 +35,8 @@ module HybridForest
     def predict(instances)
       raise "You must call #fit before you call #predict" if @instances.nil?
 
-      predictions = tree_predictions(to_dataframe(instances))
+      instances = HybridForest::Utils.to_dataframe(instances)
+      predictions = tree_predictions(instances)
       predictions.collect { |votes| majority_vote(votes) }
     end
 

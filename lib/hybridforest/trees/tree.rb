@@ -5,8 +5,6 @@ require_relative "../utilities/utils"
 module HybridForest
   module Trees
     class Tree
-      include Utils
-
       # Creates a new Tree using the specified tree growing algorithm.
       def initialize(tree_grower:)
         @tree_grower = tree_grower
@@ -16,7 +14,7 @@ module HybridForest
       # Fits a model to the given dataset +instances+ and returns +self+.
       #
       def fit(instances)
-        instances = to_dataframe(instances)
+        instances = HybridForest::Utils.to_dataframe(instances)
         @root = @tree_grower.grow_tree(instances)
         self
       end
@@ -30,7 +28,7 @@ module HybridForest
             "You must call #fit before you call #predict"
         end
 
-        to_dataframe(instances).each_row.reduce([]) do |predictions, instance|
+        HybridForest::Utils.to_dataframe(instances).each_row.reduce([]) do |predictions, instance|
           predictions << @root.classify(instance)
         end
       end

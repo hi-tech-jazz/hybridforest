@@ -7,7 +7,6 @@ require "rumale"
 module HybridForest
   module Utils
     extend self
-
     ##
     # Partitions +dataset+ into training and testing datasets, and splits the testing dataset into a dataframe
     # of independent features and an array of labels. Returns [+training_set+, +testing_set+, +testing_set_labels+]
@@ -77,7 +76,7 @@ module HybridForest
     # to_dataframe("dataset.csv", types: {"a" => :int, "b" => :float})
     #
     # Raises ArgumentError if given an invalid dataset.
-    def to_dataframe(instances, types: nil)
+    def self.to_dataframe(instances, types: nil)
       return instances if instances.is_a? Rover::DataFrame
       return instances if success? { instances = Rover::DataFrame.new(instances, types: types) }
       return instances if success? { instances = Rover.read_csv(instances, types: types) }
@@ -86,7 +85,7 @@ module HybridForest
 
     # Draws a random sample of +size+ from +data+.
     #
-    def random_sample(data:, size:, with_replacement: true)
+    def self.random_sample(data:, size:, with_replacement: true)
       raise ArgumentError, "Invalid sample size" if size < 1 || size > data.count
 
       if with_replacement
@@ -99,7 +98,7 @@ module HybridForest
 
     # Outputs a report of common prediction metrics.
     # +actual+ and +predicted+ are expected to be equal sized arrays of class labels.
-    def prediction_report(actual, predicted)
+    def self.prediction_report(actual, predicted)
       Rumale::EvaluationMeasure.classification_report(
         actual,
         predicted
@@ -108,7 +107,7 @@ module HybridForest
 
     # Given an array of predicted labels and an array of actual labels, returns the accuracy of the predictions.
     #
-    def accuracy(predicted, actual)
+    def self.accuracy(predicted, actual)
       accurate = predicted.zip(actual).count { |p, a| equal_labels?(p, a) }
       accurate.to_f / predicted.count.to_f
     end
