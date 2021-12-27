@@ -193,11 +193,11 @@ module HybridForest
     end
 
     def true_label?(label)
-      label == 1 || label == true
+      [true, 1].include? label
     end
 
     def false_label?(label)
-      label == 0 || label == false
+      [false, 0].include? label
     end
   end
 end
