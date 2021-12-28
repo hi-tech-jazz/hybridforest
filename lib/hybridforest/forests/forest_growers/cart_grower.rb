@@ -8,8 +8,8 @@ module HybridForest
         def grow_forest(instances, number_of_trees)
           forest = []
           number_of_trees.times do
-            bootstrap_sample, _, _ = HybridForest::Utils.train_test_bootstrap_split(instances)
-            forest << HybridForest::Trees::CARTTree.new.fit(bootstrap_sample)
+            sample, _, _ = HybridForest::Utils.train_test_bootstrap_split(instances)
+            forest << HybridForest::Trees::CARTTree.new.fit(sample)
           end
           forest
         end
