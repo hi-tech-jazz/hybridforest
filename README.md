@@ -1,6 +1,6 @@
 # HybridForest
 
-<code>HybridForest</code> offers the possibility to build hybrid random forests for classification tasks, i.e., ensembles where the base learners are built from not one but several different decision tree algorithms. As of now, two types of trees are supported:
+<code>HybridForest</code> offers the possibility to build hybrid random forests, i.e., ensembles where the base learners are built from not one but several different decision tree algorithms. As of now, two types of trees are supported:
 * `CARTTree`
     * Performs binary  splits at each internal node.
     * Supports categorical and continuous features.
