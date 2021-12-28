@@ -40,7 +40,7 @@ HybridForest::RandomForest.new(number_of_trees: 100, ensemble_type: :id3)
 The implementation is quite naive and there are a bunch of features that might be nice to have but are not supported, including:
 * Pruning
 * Parallelization
-* More decision trees, e.g., CHAID
+* More decision trees, e.g., C4.5 and CHAID
 * Additional hyperparameters
 
 ## Installation
