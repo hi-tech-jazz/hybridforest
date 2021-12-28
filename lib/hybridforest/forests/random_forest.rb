@@ -40,6 +40,21 @@ module HybridForest
       predictions.collect { |votes| majority_vote(votes) }
     end
 
+    def to_s
+      return "Empty random forest: \n#{super()}" if @forest.nil?
+
+      table = Terminal::Table.new do |t|
+        tally_ensemble.each do |tree_type, count|
+          t.title = "Random forest"
+          t.headings = %w[Tree Count]
+          t << [tree_type, count]
+          t << :separator
+        end
+        t << ["Total", @number_of_trees]
+      end
+      table.to_s
+    end
+
     private
 
     def majority_vote(votes)
@@ -49,6 +64,16 @@ module HybridForest
     def tree_predictions(instances)
       predictions = @forest.collect { |tree| tree.predict(instances) }
       predictions.transpose
+    end
+
+    def tally_ensemble
+      tree_type_counts = Hash.new(0)
+      @forest.each do |tree|
+        key = tree.name
+        tree_type_counts[key] += 1
+      end
+      tree_type_counts.default = nil
+      tree_type_counts
     end
   end
 end

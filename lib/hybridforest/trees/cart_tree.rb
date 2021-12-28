@@ -9,6 +9,10 @@ module HybridForest
       def initialize(tree_grower: HybridForest::Trees::TreeGrowers::CARTGrower.new)
         super(tree_grower: tree_grower)
       end
+
+      def name
+        "CART Tree"
+      end
     end
   end
 end

@@ -18,3 +18,5 @@ gem "activesupport", "~> 6.1"
 gem "rover-df", "~> 0.2.6"
 
 gem "require_all"
+
+gem "terminal-table", "~> 3.0"

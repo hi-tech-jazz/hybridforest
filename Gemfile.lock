@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    hybridforest (0.4.0)
+    hybridforest (0.5.0)
 
 GEM
   remote: https://rubygems.org/
@@ -59,6 +59,8 @@ GEM
     rumale (0.23.1)
       lbfgsb (>= 0.3.0)
       numo-narray (>= 0.9.1)
+    terminal-table (3.0.2)
+      unicode-display_width (>= 1.1.1, < 3)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
@@ -76,6 +78,7 @@ DEPENDENCIES
   rspec (~> 3.0)
   rubocop (~> 1.7)
   rumale
+  terminal-table (~> 3.0)
 
 BUNDLED WITH
    2.3.3

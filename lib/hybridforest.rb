@@ -6,6 +6,7 @@ require "rover"
 require "rspec"
 require "rumale"
 require "set"
+require "terminal-table"
 
 require_relative "hybridforest/version"
 require_relative "hybridforest/errors/invalid_state_error"

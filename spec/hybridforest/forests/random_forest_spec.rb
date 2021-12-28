@@ -67,4 +67,14 @@ RSpec.describe HybridForest::RandomForest do
       expect(predictions.size).to eq test_data_without_labels.size
     end
   end
+
+  describe "#to_s" do
+    before do
+      forest.fit(training_data)
+    end
+    it "returns a nice string representation" do
+      expect(forest.to_s).to include "Random forest", "Tree", "Total", "Count"
+      puts forest.to_s
+    end
+  end
 end
