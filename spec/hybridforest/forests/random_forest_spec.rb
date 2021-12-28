@@ -73,7 +73,7 @@ RSpec.describe HybridForest::RandomForest do
       forest.fit(training_data)
     end
     it "returns a nice string representation" do
-      expect(forest.to_s).to include "Random forest", "Tree", "Total", "Count"
+      expect(forest.to_s).to include "random forest", "Tree", "Total", "Count"
       puts forest.to_s
     end
   end

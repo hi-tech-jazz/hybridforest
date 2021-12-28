@@ -43,8 +43,13 @@ module HybridForest
     def to_s
       return "Empty random forest: \n#{super()}" if @forest.nil?
 
+      title = case @ensemble_type
+              when :hybrid then "Hybrid random forest"
+              else "Uniform random forest"
+      end
+
       table = Terminal::Table.new do |t|
-        t.title = "Random forest"
+        t.title = title
         t.headings = %w[Tree Count]
         tally_ensemble.each do |tree_type, count|
           t << [tree_type, count]
