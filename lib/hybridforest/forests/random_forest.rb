@@ -44,9 +44,9 @@ module HybridForest
       return "Empty random forest: \n#{super()}" if @forest.nil?
 
       table = Terminal::Table.new do |t|
+        t.title = "Random forest"
+        t.headings = %w[Tree Count]
         tally_ensemble.each do |tree_type, count|
-          t.title = "Random forest"
-          t.headings = %w[Tree Count]
           t << [tree_type, count]
           t << :separator
         end
