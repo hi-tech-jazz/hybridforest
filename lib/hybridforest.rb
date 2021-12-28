@@ -38,4 +38,9 @@ require_relative "hybridforest/trees/tree_growers/id3_grower"
 require_relative "hybridforest/utilities/utils"
 
 module HybridForest
+  FOREST_TYPES = [
+    :hybrid,
+    :cart,
+    :id3
+  ].freeze
 end
