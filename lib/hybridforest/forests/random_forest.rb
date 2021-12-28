@@ -23,9 +23,9 @@ module HybridForest
     # Fits a model to the given dataset +instances+ and returns +self+.
     #
     def fit(instances)
-      @instances = HybridForest::Utils.to_dataframe(instances)
+      instances = HybridForest::Utils.to_dataframe(instances)
       forest_grower = Forests::GrowerFactory.for(@ensemble_type)
-      @forest = forest_grower.grow_forest(@instances, @number_of_trees)
+      @forest = forest_grower.grow_forest(instances, @number_of_trees)
       self
     end
 
@@ -33,7 +33,7 @@ module HybridForest
     # Predicts a label for each instance in the dataset +instances+ and returns an array of labels.
     #
     def predict(instances)
-      raise "You must call #fit before you call #predict" if @instances.nil?
+      raise Errors::InvalidStateError, "You must call #fit before you call #predict" if @forest.nil?
 
       instances = HybridForest::Utils.to_dataframe(instances)
       predictions = tree_predictions(instances)
