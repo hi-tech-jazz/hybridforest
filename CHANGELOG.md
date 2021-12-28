@@ -17,3 +17,7 @@
 ## [0.6.0] - 2021-12-28
 
 - Add nicer to_s for HybridForest::RandomForest
+
+## [0.7.0] - 2021-12-28
+
+- Add specific title to HybridForest::RandomForest#to_s
