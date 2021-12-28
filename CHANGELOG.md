@@ -21,3 +21,9 @@
 ## [0.7.0] - 2021-12-28
 
 - Add specific title to HybridForest::RandomForest#to_s
+
+## [0.8.0] - 2021-12-28
+
+- Raise custom error, not string
+- Add supported tree types list
+- Minor refactoring of internal logic
