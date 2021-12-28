@@ -13,3 +13,7 @@
 
 - Make all utility methods module methods
 - Implement random sampling without replacement
+
+## [0.6.0] - 2021-12-28
+
+- Add nicer to_s for HybridForest::RandomForest
