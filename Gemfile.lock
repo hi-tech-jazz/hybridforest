@@ -1,7 +1,15 @@
 PATH
   remote: .
   specs:
-    hybridforest (0.7.0)
+    hybridforest (0.8.0)
+      activesupport (~> 6.1)
+      rake (~> 13.0)
+      require_all
+      rover-df (~> 0.2.6)
+      rspec (~> 3.0)
+      rubocop (~> 1.7)
+      rumale
+      terminal-table (~> 3.0)
 
 GEM
   remote: https://rubygems.org/

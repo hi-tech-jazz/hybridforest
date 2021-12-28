@@ -27,3 +27,7 @@
 - Raise custom error, not string
 - Add supported tree types list
 - Minor refactoring of internal logic
+
+## [0.9.0] - 2021-12-28
+
+- Update dependencies
