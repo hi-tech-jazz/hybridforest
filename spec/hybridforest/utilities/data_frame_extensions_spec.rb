@@ -156,4 +156,10 @@ RSpec.describe HybridForest::Utils::DataFrameExtensions do
       end
     end
   end
+
+  describe "#class_labels" do
+    it "returns an array of class labels" do
+      expect(dataframe.class_labels).to eq [:f, :f, :g, :h]
+    end
+  end
 end

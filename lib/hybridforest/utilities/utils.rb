@@ -113,7 +113,7 @@ module HybridForest
     #
     def self.accuracy(predicted, actual)
       accurate = predicted.zip(actual).count { |p, a| equal_labels?(p, a) }
-      accurate.to_f / predicted.count.to_f
+      accurate.to_f / predicted.count
     end
 
     # Extensions to simplify common dataframe operations.
@@ -146,11 +146,11 @@ module HybridForest
         end
 
         def feature_count(without_label: true)
-          without_label ? names.count - 1 : names.count
+          without_label ? features.count : names.count
         end
 
         def pure?
-          column_by_index(-1).uniq.size == 1
+          self[label].uniq.size == 1
         end
 
         def features
@@ -158,7 +158,7 @@ module HybridForest
         end
 
         def count_labels
-          column_by_index(-1).tally
+          self[label].tally
         end
 
         def label
