@@ -31,3 +31,7 @@
 ## [0.9.0] - 2021-12-28
 
 - Update dependencies
+
+## [0.10.0] - 2021-12-29
+
+- Refactor dataframe extensions
