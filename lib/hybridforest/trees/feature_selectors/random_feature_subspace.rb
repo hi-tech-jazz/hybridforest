@@ -6,6 +6,7 @@ module HybridForest
   module Trees
     class RandomFeatureSubspace
       def select_features(all_features)
+        # TODO: Allow the subspace size to be configured.
         n = default_subspace_size(all_features.count)
         indices = Set.new
         until indices.size == n
