@@ -6,15 +6,21 @@ RSpec.describe HybridForest::Utils do
       {a: 1, b: "one", c: 5, d: 1, label: :f},
       {a: 2, b: "two", c: 7, d: 0, label: :f},
       {a: 3, b: "two", c: 7, d: 1, label: :g},
-      {a: 4, b: "two", c: 6, d: 0, label: :h}
+      {a: 4, b: "two", c: 6, d: 0, label: :h},
+      {a: 5, b: "one", c: 5, d: 1, label: :f},
+      {a: 6, b: "one", c: 7, d: 0, label: :f},
+      {a: 7, b: "two", c: 7, d: 1, label: :g},
+      {a: 8, b: "two", c: 6, d: 0, label: :h}
     ])
   }
 
   describe ".train_test_split(dataset, test_set_size: 20)" do
     it "splits the dataset into training set, test set, test set labels" do
-      train, test, test_labels = HybridForest::Utils.train_test_split(instances)
+      train, test, test_labels = described_class.train_test_split(instances)
       expect(train).to be_a Rover::DataFrame
+      expect(train.size).to eq 7
       expect(test).to be_a Rover::DataFrame
+      expect(test.size).to eq 1
       expect(test_labels).to be_an Array
       expect(test_labels.size).to eq test.size
     end
@@ -22,11 +28,13 @@ RSpec.describe HybridForest::Utils do
 
   describe ".train_test_bootstrap_split(dataset)" do
     it "splits the dataset into training set, test set, test set labels" do
-      train, test, test_labels = HybridForest::Utils.train_test_split(instances)
+      train, test, test_labels = described_class.train_test_split(instances)
       expect(train).to be_a Rover::DataFrame
+      expect([7, 8]).to include train.size
       expect(test).to be_a Rover::DataFrame
       expect(test_labels).to be_an Array
       expect(test_labels.size).to eq test.size
+      expect(train[train[:a] == test[:a][0]].count).to eq 0
     end
   end
 

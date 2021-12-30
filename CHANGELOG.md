@@ -35,3 +35,8 @@
 ## [0.10.0] - 2021-12-29
 
 - Refactor dataframe extensions
+
+## [0.11.0] - 2021-12-29
+
+- Randomize Utils.train_test_split
+- Refactor Utils module

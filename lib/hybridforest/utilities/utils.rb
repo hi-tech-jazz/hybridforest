@@ -12,17 +12,16 @@ module HybridForest
     # of independent features and an array of labels. Returns [+training_set+, +testing_set+, +testing_set_labels+]
     #
     def self.train_test_split(dataset, test_set_size = 0.20)
-      # TODO: Shuffle and stratify samples
+      # TODO: Offer stratify param
       dataset = to_dataframe(dataset)
+      all_rows = (0...dataset.count).to_a
 
       test_set_count = (dataset.count * test_set_size).floor
-      test_set_indices = 0..test_set_count
-      test_set = dataset[test_set_indices]
-      test_set_labels = test_set.class_labels
-      test_set.except!(test_set.label)
+      test_set_rows = rand_uniq_nums(test_set_count, 0...dataset.count)
+      test_set = dataset[test_set_rows]
+      test_set, test_set_labels = test_set.disconnect_labels
 
-      train_set_indices = test_set_count + 1...dataset.count
-      train_set = dataset[train_set_indices]
+      train_set = dataset[all_rows - test_set_rows]
 
       [train_set, test_set, test_set_labels]
     end
@@ -37,20 +36,13 @@ module HybridForest
       dataset = to_dataframe(dataset)
       all_rows = (0...dataset.count).to_a
 
-      train_set = Rover::DataFrame.new
-      train_set_rows = []
-      dataset.count.times do
-        row = all_rows.sample
-        train_set_rows << row
-        train_set.concat(dataset[row])
-      end
+      train_set_rows = rand_nums(dataset.count, 0...dataset.count)
+      train_set = dataset[train_set_rows]
 
       return train_test_split(dataset) if train_set_rows.sort == all_rows
 
-      test_set_rows = all_rows - train_set_rows
-      test_set = dataset[test_set_rows]
-      test_set_labels = test_set.class_labels
-      test_set.except!(test_set.label)
+      test_set = dataset[all_rows - train_set_rows]
+      test_set, test_set_labels = test_set.disconnect_labels
 
       [train_set, test_set, test_set_labels]
     end
@@ -88,16 +80,12 @@ module HybridForest
     def self.random_sample(data:, size:, with_replacement: true)
       raise ArgumentError, "Invalid sample size" if size < 1 || size > data.count
 
-      if with_replacement
-        rows = size.times.collect { rand(0...data.count) }
-        data[rows]
+      rows = if with_replacement
+        rand_nums(size, 0...data.count)
       else
-        rows = Set.new
-        until rows.size == size
-          rows << rand(0...data.count)
-        end
-        data[rows.to_a]
+        rand_uniq_nums(size, 0...data.count)
       end
+      data[rows]
     end
 
     # Outputs a report of common prediction metrics.
@@ -168,6 +156,12 @@ module HybridForest
         def class_labels
           self[label].to_a
         end
+
+        def disconnect_labels
+          labels = class_labels
+          except!(label)
+          [self, labels]
+        end
       end
     end
 
@@ -201,6 +195,24 @@ module HybridForest
 
     def false_label?(label)
       [false, 0].include? label
+    end
+
+    ##
+    # Returns an array of +n+ random numbers in the exclusive +range+.
+    def rand_nums(n, range)
+      n.times.collect { rand(range) }
+    end
+
+    ##
+    # Returns an array of +n+ _unique_ random numbers in the exclusive +range+.
+    def rand_uniq_nums(n, range)
+      raise ArgumentError if n > range.size
+
+      nums = Set.new
+      until nums.size == n
+        nums << rand(range)
+      end
+      nums.to_a
     end
   end
 end

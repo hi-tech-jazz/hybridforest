@@ -6,16 +6,20 @@ RSpec.describe HybridForest::Utils::DataFrameExtensions do
       {a: 1, b: "one", c: 5, d: 1, label: :f},
       {a: 2, b: "two", c: 7, d: 0, label: :f},
       {a: 3, b: "two", c: 7, d: 1, label: :g},
-      {a: 4, b: "two", c: 6, d: 0, label: :h}
+      {a: 4, b: "two", c: 6, d: 0, label: :h},
+      {a: 5, b: "one", c: 5, d: 1, label: :f},
+      {a: 6, b: "one", c: 7, d: 0, label: :f},
+      {a: 7, b: "two", c: 7, d: 1, label: :g},
+      {a: 8, b: "two", c: 6, d: 0, label: :h}
     ])
   end
 
   describe "#column_by_index(index)" do
     it "returns the column specified by the index" do
       first_column = dataframe.column_by_index(0)
-      expect(first_column.to_a).to eq [1, 2, 3, 4]
+      expect(first_column.to_a).to eq [1, 2, 3, 4, 5, 6, 7, 8]
       second_column = dataframe.column_by_index(1)
-      expect(second_column.to_a).to eq %w[one two two two]
+      expect(second_column.to_a).to eq %w[one two two two one one two two]
     end
   end
 
@@ -31,9 +35,9 @@ RSpec.describe HybridForest::Utils::DataFrameExtensions do
       label_counts = dataframe.count_labels
       expect(label_counts).to eq(
         {
-          f: 2,
-          g: 1,
-          h: 1
+          f: 4,
+          g: 2,
+          h: 2
         }
       )
     end
@@ -116,7 +120,7 @@ RSpec.describe HybridForest::Utils::DataFrameExtensions do
         expect(subsets).to be_an Array
         expect(subsets.size).to eq 2
         true_instances, false_instances = subsets
-        expect(true_instances[:a].to_a).to eq [2, 3, 4]
+        expect(true_instances[:a].to_a).to eq [2, 3, 4, 5, 6, 7, 8]
         expect(false_instances[:a].to_a).to eq [1]
       end
     end
@@ -127,7 +131,7 @@ RSpec.describe HybridForest::Utils::DataFrameExtensions do
         expect(subsets).to be_an Array
         expect(subsets.size).to eq 2
         true_instances, false_instances = subsets
-        expect(true_instances[:a].to_a).to eq [1, 2, 3, 4]
+        expect(true_instances[:a].to_a).to eq [1, 2, 3, 4, 5, 6, 7, 8]
         expect(false_instances[:a].to_a).to eq []
       end
     end
@@ -140,8 +144,8 @@ RSpec.describe HybridForest::Utils::DataFrameExtensions do
         expect(subsets).to be_an Array
         expect(subsets.size).to eq 2
         true_instances, false_instances = subsets
-        expect(true_instances[:d].to_a).to eq [1, 1]
-        expect(false_instances[:d].to_a).to eq [0, 0]
+        expect(true_instances[:d].to_a).to eq [1, 1, 1, 1]
+        expect(false_instances[:d].to_a).to eq [0, 0, 0, 0]
       end
     end
 
@@ -152,14 +156,23 @@ RSpec.describe HybridForest::Utils::DataFrameExtensions do
         expect(subsets.size).to eq 2
         true_instances, false_instances = subsets
         expect(true_instances[:d].to_a).to eq []
-        expect(false_instances[:d].to_a).to eq [1, 0, 1, 0]
+        expect(false_instances[:d].to_a).to eq [1, 0, 1, 0, 1, 0, 1, 0]
       end
     end
   end
 
   describe "#class_labels" do
     it "returns an array of class labels" do
-      expect(dataframe.class_labels).to eq [:f, :f, :g, :h]
+      expect(dataframe.class_labels).to eq [:f, :f, :g, :h, :f, :f, :g, :h]
+    end
+  end
+
+  describe "#disconnect_labels" do
+    it "returns the dataframe without the labels and the disconnected labels" do
+      df_only_features, labels = dataframe.disconnect_labels
+      expect(df_only_features).to be_a Rover::DataFrame
+      expect(df_only_features.names).to eq [:a, :b, :c, :d]
+      expect(labels).to eq [:f, :f, :g, :h, :f, :f, :g, :h]
     end
   end
 end
