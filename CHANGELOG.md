@@ -40,3 +40,8 @@
 
 - Randomize Utils.train_test_split
 - Refactor Utils module
+
+## [0.12.0] - 2022-01-08
+
+- Allow Utils.random_sample to be passed a dataframe or a dataframe convertible object
+- Allow Utils.random_sample's 'size' arg to equal the size of the initial dataframe if the strategy is sampling with replacement
