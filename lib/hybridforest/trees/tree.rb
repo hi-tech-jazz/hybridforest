@@ -5,7 +5,7 @@ require_relative "../utilities/utils"
 module HybridForest
   module Trees
     class Tree
-      # Creates a new Tree using the specified tree growing algorithm.
+      # Creates a new tree using the specified tree growing algorithm.
       def initialize(tree_grower:)
         @tree_grower = tree_grower
       end
@@ -33,8 +33,7 @@ module HybridForest
         end
       end
 
-      # Prints a string representation of this Tree.
-      def inspect
+      def to_s
         if @root.nil?
           "Empty tree: #{super}"
         else
