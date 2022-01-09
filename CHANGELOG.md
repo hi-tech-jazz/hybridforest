@@ -45,3 +45,7 @@
 
 - Allow Utils.random_sample to be passed a dataframe or a dataframe convertible object
 - Allow Utils.random_sample's 'size' arg to equal the size of the initial dataframe if the strategy is sampling with replacement
+
+## [0.13.0] - 2022-01-09
+
+- Refactor forest growers
