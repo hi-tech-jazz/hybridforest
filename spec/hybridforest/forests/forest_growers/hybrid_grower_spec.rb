@@ -74,25 +74,28 @@ RSpec.describe HybridForest::Forests::ForestGrowers::HybridGrower do
     [1, 1, 1, 0]
   end
 
-  describe "#fit_and_predict(tree_class, in_of_bag, out_of_bag, out_of_bag_labels)" do
-    let(:tree_class) { HybridForest::Trees::CARTTree }
-    it "fits an instance of the tree class on the in of bag sample and applies it on the out of bag sample" do
-      tree_result = forest_grower.send(:fit_and_predict, tree_class, in_of_bag, out_of_bag, out_of_bag_labels)
-      expect(tree_result[:tree]).to be_an_instance_of tree_class
-      expect(tree_result[:oob_accuracy]).to be_a Float
-    end
-  end
-
-  describe "grow_trees(tree_types, in_of_bag, out_of_bag, out_of_bag_labels)" do
+  describe "#predict_evalute_trees(trees, oob, oob_labels)" do
     let(:tree_types) { [HybridForest::Trees::CARTTree, HybridForest::Trees::ID3Tree] }
-    it "grows a tree for each tree type and returns an array of tree accuracy results" do
-      tree_results = forest_grower.send(:grow_trees, tree_types, in_of_bag, out_of_bag, out_of_bag_labels)
+    let(:trees) { forest_grower.send(:grow_trees, tree_types, in_of_bag) }
+    it "applies each tree on the data and the returns an array of tree accuracy results" do
+      tree_results = forest_grower.send(:predict_evaluate_trees, trees, out_of_bag, out_of_bag_labels)
       expect(tree_results).to be_an Array
       expect(tree_results.size).to eq 2
       expect(tree_results[0][:tree]).to be_a HybridForest::Trees::CARTTree
       expect(tree_results[0][:oob_accuracy]).to be_a Float
       expect(tree_results[1][:tree]).to be_a HybridForest::Trees::ID3Tree
       expect(tree_results[1][:oob_accuracy]).to be_a Float
+    end
+  end
+
+  describe "grow_trees(tree_types, iob_data)" do
+    let(:tree_types) { [HybridForest::Trees::CARTTree, HybridForest::Trees::ID3Tree] }
+    it "grows a tree for each tree type and returns an array of trees" do
+      trees = forest_grower.send(:grow_trees, tree_types, in_of_bag)
+      expect(trees).to be_an Array
+      expect(trees.size).to eq 2
+      expect(trees[0]).to be_a HybridForest::Trees::CARTTree
+      expect(trees[1]).to be_a HybridForest::Trees::ID3Tree
     end
   end
 end

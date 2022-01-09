@@ -11,8 +11,9 @@ module HybridForest
         def grow_forest(instances, number_of_trees)
           forest = []
           number_of_trees.times do
-            in_of_bag, out_of_bag, out_of_bag_labels = HybridForest::Utils.train_test_bootstrap_split(instances)
-            tree_results = grow_trees(TREE_TYPES, in_of_bag, out_of_bag, out_of_bag_labels)
+            iob_data, oob_data, oob_labels = HybridForest::Utils.train_test_bootstrap_split(instances)
+            trees = grow_trees(TREE_TYPES, iob_data)
+            tree_results = predict_evaluate_trees(trees, oob_data, oob_labels)
             best_tree = select_best_tree(tree_results)
             forest << best_tree
           end
@@ -21,24 +22,27 @@ module HybridForest
 
         private
 
-        def fit_and_predict(tree_class, in_of_bag, out_of_bag, out_of_bag_labels)
-          tree = tree_class.new.fit(in_of_bag)
-          tree_predictions = tree.predict(out_of_bag)
-          tree_accuracy = HybridForest::Utils.accuracy(tree_predictions, out_of_bag_labels)
-          {tree: tree, oob_accuracy: tree_accuracy}
+        def grow_trees(tree_types, iob_data)
+          tree_types.collect do |tree_type|
+            tree_type.new.fit(iob_data)
+          end
+        end
+
+        def predict_evaluate_trees(trees, oob_data, oob_labels)
+          trees.collect do |tree|
+            predict_evaluate(tree, oob_data, oob_labels)
+          end
+        end
+
+        def predict_evaluate(tree, data, actual_labels)
+          predicted_labels = tree.predict(data)
+          accuracy = HybridForest::Utils.accuracy(predicted_labels, actual_labels)
+          {tree: tree, oob_accuracy: accuracy}
         end
 
         def select_best_tree(tree_results)
           best_result = tree_results.max_by(1) { |result| result[:oob_accuracy] }.first
           best_result[:tree]
-        end
-
-        def grow_trees(tree_types, in_of_bag, out_of_bag, out_of_bag_labels)
-          tree_results = []
-          tree_types.each do |tree_type|
-            tree_results << fit_and_predict(tree_type, in_of_bag, out_of_bag, out_of_bag_labels)
-          end
-          tree_results
         end
       end
     end

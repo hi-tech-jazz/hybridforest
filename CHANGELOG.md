@@ -49,3 +49,8 @@
 ## [0.13.0] - 2022-01-09
 
 - Refactor forest growers
+
+
+## [0.14.0] - 2022-01-09
+
+- Refactor hybrid forest grower
